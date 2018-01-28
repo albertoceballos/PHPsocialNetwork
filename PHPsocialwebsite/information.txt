@@ -1,0 +1,8 @@
+client id: 546ac09f76af77b
+
+client secret: 31445d6f1077953f6b167da5bac26182639288b8
+
+
+access token: 1e5ff626e0cc7eaf664955e82619c830560d7331
+
+refresh token: c09a6d7e29cb5b761e246cf9a8f0533cd8c08b2f

@@ -1,7 +1,7 @@
 <?php
 //includes database controller class
   include('classes/DB.php');
-
+  include('classes/Mail.php');
 //if post button is pushed then get the information
   if(isset($_POST['createaccount'])){
     $username = $_POST['username'];
@@ -19,8 +19,16 @@
           if(strlen($password) >=6 && strlen($password)<=60){
             //checks if the email is valid
             if(filter_var($email,FILTER_VALIDATE_EMAIL)){
-              //runs query to database controller and hashes password
-              DB::query('INSERT INTO users (username,password,email) VALUES (:username,:password,:email)',array('username'=>$username,'password'=>password_hash($password,PASSWORD_BCRYPT),'email'=>$email));
+              //checks if email already exists
+              if(!DB::query('SELECT email FROM users WHERE email=:email',array(':email'=>$email))){
+                //runs query to database controller and hashes password
+                DB::query('INSERT INTO users (username,password,email) VALUES (:username,:password,:email)',array(':username'=>$username,':password'=>password_hash($password,PASSWORD_BCRYPT),':email'=>$email));
+                Mail::sendMail('Welcome to social network','Your account has been created!',$email);
+                echo 'Success';
+              }else{
+                echo 'email already in use';
+              }
+
             }else{
               echo 'Invalid email';
             }
